@@ -1,5 +1,22 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": 1,
+      "name": "Myra"
+    },
+    {
+      "id": "c567",
+      "name": "Lois Koelpin"
+    },
+    {
+      "id": "84de",
+      "name": "Cecil Cartwright"
+    },
+    {
+      "id": "4d86",
+      "name": "Joanna Kshlerin"
+    }
+  ],
   "albums": [],
   "photos": []
 }
