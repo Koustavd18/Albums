@@ -1,7 +1,51 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useThunk } from "../hooks/use-thunk";
+import { fetchUsers, addUser } from "../store";
+import Button from "./Button";
+import Skeleton from "./Skeleton";
+import UserListItem from "./UserListItem";
+
 function UserList() {
+  const [doFetchUsers, isLoadingUser, loadingUserError] = useThunk(fetchUsers);
+  const [doCreateUser, isCreatingUser, creatingUserError] = useThunk(addUser);
+
+  const { data } = useSelector((state) => {
+    return state.users;
+  });
+
+  const handleAddUser = () => {
+    doCreateUser();
+  };
+
+  //Get the List of users
+  useEffect(() => {
+    doFetchUsers();
+  }, [doFetchUsers]);
+
+  let content;
+  if (isLoadingUser) {
+    content = <Skeleton times={6} className="h-10 w-full" />;
+  } else if (loadingUserError) {
+    content = <div>Error Fetching Users....</div>;
+  } else {
+    content = data.map((user) => {
+      return <UserListItem key={user.id} user={user} />;
+    });
+  }
+
   return (
     <div>
-      <h1>UserList</h1>
+      <div className="flex flex-row justify-between m-3 items-center">
+        <h1 className="m-2 text-xl">User</h1>
+
+        <Button loading={isCreatingUser} onClick={handleAddUser}>
+          + Add User
+        </Button>
+
+        {creatingUserError && "Error while creating new User....."}
+      </div>
+      {content}
     </div>
   );
 }
